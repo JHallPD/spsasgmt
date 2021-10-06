@@ -58,7 +58,34 @@ class Card extends React.Component {
     }
 
     openColorPicker = (name) =>{
+
         this.setState((prev) => ({ [name]: !prev[name] }));
+        switch (name) {
+            case "titleColorOpen":
+                this.setState({
+                    titleColorOpen: !this.state.titleColorOpen,
+                    bodyColorOpen: false,
+                    panelColorOpen: false, })
+                break
+            case "bodyColorOpen":
+                this.setState({
+                    titleColorOpen: false,
+                    bodyColorOpen: !this.state.bodyColorOpen,
+                    panelColorOpen: false, })
+                break
+            case "panelColorOpen":
+                this.setState({
+                    titleColorOpen: false,
+                    bodyColorOpen: false,
+                    panelColorOpen: !this.state.panelColorOpen, })
+                break
+            default:
+                console.log("shouldn't be here :/")
+                this.setState({
+                    titleColorOpen: false,
+                    bodyColorOpen: false,
+                    panelColorOpen: false, })
+        }
     }
 
     // edit logic to handle changing data
@@ -82,15 +109,31 @@ class Card extends React.Component {
             case "bodySize":
                 this.setState({ bodySize: e.target.value })
                 break
+            case "cornerRadius":
+                this.setState({cornerRadius: e.target.value})
+                break
             default:
                 console.log("shouldn't be here :/")
         }
     }
-    toggleColors = () => {
-
+    changeColor = (color) =>{
+        console.log(color)
+        switch (true) {
+            case this.state.panelColorOpen:
+                this.setState({ color: color.hex })
+                break
+            case this.state.titleColorOpen:
+                this.setState({ titleColor: color.hex })
+                break
+            case this.state.bodyColorOpen:
+                this.setState({ bodyColor: color.hex })
+                break
+            default:
+                console.log("shouldn't be here :/")
+        }
     }
     render() {
-        return <div className="card-div" style={{order: this.state.key}} id={this.state.key}>
+        return <div className="card-div" style={{order: this.state.key, backgroundColor: this.state.color, borderRadius: this.state.cornerRadius}} id={this.state.key}>
             <div className="card-title-box">
                 <p className="card-title" style={{color: this.state.titleColor, fontSize:this.state.titleSize}}>{this.state.title}</p>
                 <img src={edit} className="card-edit" alt="edit" onClick={this.openEdit}/>
@@ -145,7 +188,7 @@ class Card extends React.Component {
                                 <label>Color</label>
                                 <div style={{backgroundColor:this.state.titleColor}} onClick={() => this.openColorPicker('titleColorOpen')} className="colorBox"/>
                                 {this.state.titleColorOpen?
-                                <BlockPicker color={this.state.titleColor} classname="test"/>
+                                <BlockPicker color={this.state.titleColor} onChangeComplete={this.changeColor}/>
                                 :null}
                             </div>
                         </div>
@@ -153,13 +196,13 @@ class Card extends React.Component {
                         <div className="body-picker">
                             <div className="body-size">
                                 <label>Size</label>
-                                <input type="text" name="titleSize" onChange={this.edit} value={this.state.bodySize} data-placeholder="/px"/>
+                                <input type="text" name="bodySize" onChange={this.edit} value={this.state.bodySize} data-placeholder="/px"/>
                             </div>
                             <div className="body-color">
                                 <label>Color</label>
                                 <div style={{backgroundColor:this.state.bodyColor}} onClick={() => this.openColorPicker('bodyColorOpen')} className="colorBox"/>
                                 {this.state.bodyColorOpen?
-                                    <BlockPicker color={this.state.bodyColor}/>
+                                    <BlockPicker color={this.state.bodyColor} onChangeComplete={this.changeColor}/>
                                     :null}
                             </div>
                         </div>
@@ -167,13 +210,13 @@ class Card extends React.Component {
                         <div className="panel-picker">
                             <div className="panel-size">
                                 <label>Corner Radius</label>
-                                <input type="text" name="titleSize" onChange={this.edit} value={this.state.cornerRadius} data-placeholder="/px"/>
+                                <input type="text" name="cornerRadius" onChange={this.edit} value={this.state.cornerRadius} data-placeholder="/px"/>
                             </div>
                             <div className="panel-color">
                                 <label>Color</label>
                                 <div style={{backgroundColor:this.state.color}} onClick={() => this.openColorPicker('panelColorOpen')} className="colorBox"/>
                                 {this.state.panelColorOpen?
-                                    <BlockPicker color={this.state.color}/>
+                                    <BlockPicker color={this.state.color} onChangeComplete={this.changeColor}/>
                                     :null}
                             </div>
                         </div>
