@@ -147,7 +147,6 @@
   left: 24px;
   top: 24px;
 
-  font-family: Ubuntu;
   font-style: normal;
   font-weight: 500;
   font-size: 36px;
@@ -450,7 +449,6 @@
   left: 0px;
   top: 0px;
 
-  font-family: Ubuntu;
   font-style: normal;
   font-weight: 500;
   font-size: 15px;
@@ -475,7 +473,6 @@
   left: 0px;
   top: 0px;
 
-  font-family: Ubuntu;
   font-style: normal;
   font-weight: 500;
   font-size: 15px;
@@ -550,7 +547,6 @@
 }
 .text-text,
 .title-text {
-  font-family: Ubuntu;
   font-style: normal;
   font-weight: 500;
   font-size: 15px;
