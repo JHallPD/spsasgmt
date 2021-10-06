@@ -56,22 +56,22 @@ class Card extends React.Component {
                 this.setState({ title: e.target.value })
                 break
             case "body":
-                this.props.data.text = e.target.value
+                this.setState({ text: e.target.value })
                 break
             case "titleColor":
-                this.props.data.titleColor = e.target.value
+                this.setState({ titleColor: e.target.value })
                 break
             case "titleSize":
-                this.props.data.titleSize = e.target.value
+                this.setState({ titleSize: e.target.value })
                 break
             case "bodyColor":
-                this.props.data.bodyColor = e.target.value
+                this.setState({ bodyColor: e.target.value })
                 break
             case "bodySize":
-                this.props.data.bodySize = e.target.value
+                this.setState({ bodySize: e.target.value })
                 break
             default:
-                console.log("shouldnt be here :/")
+                console.log("shouldn't be here :/")
         }
     }
     render() {
@@ -86,17 +86,17 @@ class Card extends React.Component {
                     <img src={deleteB} className="card-delete" alt="delete" onClick={this.delete}/>}
             </div>
             <div className="card-body" >
-                <p className="card-text" style={{color: this.props.data.bodyColor, fontSize:this.props.data.bodySize}}>{this.props.data.text}</p>
+                <p className="card-text" style={{color: this.state.bodyColor, fontSize:this.state.bodySize}}>{this.state.text}</p>
             </div>
-            {this.state.editable && (                <div className="editModal" id={"edit-"+this.props.data.key} >
+            {this.state.editable && (                <div className="editModal" id={"edit-"+this.state.key} >
                     <div className="tabs">
-                        <div className="edit-settings" name="settings" id={"edit-settings-" + this.props.data.key}onClick={() => this.changeTab}>
+                        <div className="edit-settings" name="settings" id={"edit-settings-" + this.state.key}onClick={() => this.changeTab}>
                             {this.state.tab === "settings"?
                                 <img src={settings} className="selected"  alt="settings"/>
                                 :<img src={settingsS}  alt="settings"/>
                             }
                         </div>
-                        <div className="edit-style" name="style" id={"edit-style-" + this.props.data.key} onClick={() => this.changeTab}>
+                        <div className="edit-style" name="style" id={"edit-style-" + this.state.key} onClick={() => this.changeTab}>
                             {this.state.tab === "settings"?
                                 <img src={style} alt="style"/>
                                 :<img src={styleS} className="selected"  alt="style"/>}
