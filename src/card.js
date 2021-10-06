@@ -34,6 +34,7 @@ class Card extends React.Component {
         if(oldEL){
             oldEL.classList.add("card-div")
             oldEL.classList.remove("card-div-edit")
+            oldEL.childNodes[2].setAttribute("style", "visibility: hidden")
         }
         if(oldEL !== el){
             el.classList.add("card-div-edit")
@@ -74,8 +75,12 @@ class Card extends React.Component {
                 console.log("shouldn't be here :/")
         }
     }
+    focusOut = () =>{
+        console.log("what")
+        this.setState({ editable: !this.state.editable })
+    }
     render() {
-        return <div className="card-div" style={{order: this.state.key}} id={this.state.key}>
+        return <div className="card-div" style={{order: this.state.key}} id={this.state.key} onBlur={this.focusOut}>
             <div className="card-title-box">
                 <p className="card-title" style={{color: this.state.titleColor, fontSize:this.state.titleSize}}>{this.state.title}</p>
                 <img src={edit} className="card-edit" alt="edit" onClick={this.openEdit}/>
@@ -88,44 +93,43 @@ class Card extends React.Component {
             <div className="card-body" >
                 <p className="card-text" style={{color: this.state.bodyColor, fontSize:this.state.bodySize}}>{this.state.text}</p>
             </div>
-            {this.state.editable && (                <div className="editModal" id={"edit-"+this.state.key} >
-                    <div className="tabs">
-                        <div className="edit-settings" name="settings" id={"edit-settings-" + this.state.key}onClick={() => this.changeTab}>
-                            {this.state.tab === "settings"?
-                                <img src={settings} className="selected"  alt="settings"/>
-                                :<img src={settingsS}  alt="settings"/>
-                            }
-                        </div>
-                        <div className="edit-style" name="style" id={"edit-style-" + this.state.key} onClick={() => this.changeTab}>
-                            {this.state.tab === "settings"?
-                                <img src={style} alt="style"/>
-                                :<img src={styleS} className="selected"  alt="style"/>}
-
-                        </div>
+            <div className="editModal" id={"edit-"+this.state.key} style={{visibility: this.state.editable?"visible":"hidden"}}>
+                <div className="tabs" >
+                    <div className="edit-settings" name="settings" onClick={() => this.changeTab}>
+                        {this.state.tab === "settings"?
+                            <img src={settings} className="selected"  alt="settings"/>
+                            :<img src={settingsS}  alt="settings"/>
+                        }
                     </div>
-                    {this.state.tab === "settings"?
-                        <div className="content">
-                            <div className="title-box">
-                                <label className="title">
-                                    <p className="title-text">Title Text</p>
-                                    <input type="text" name="title" className="title-input" onChange={this.edit} placeholder={"Enter custom title"}/>
-                                </label>
-                            </div>
-                            <div className="text-box">
-                                <label className="text">
-                                    <p className='text-text'>Body Text</p>
-                                    <input type="text" name="body" className="text-input" onChange={this.edit} placeholder={"Enter custom text"}/>
-                                </label>
-                            </div>
+                    <div className="edit-style" name="style" onClick={() => this.changeTab}>
+                        {this.state.tab === "settings"?
+                            <img src={style} alt="style"/>
+                            :<img src={styleS} className="selected"  alt="style"/>}
 
-                        </div>:
-                        <div className="content">
-
-                        </div>
-                    }
-
+                    </div>
                 </div>
-            )}
+                {this.state.tab === "settings"?
+                    <div className="content">
+                        <div className="title-box">
+                            <label className="title">
+                                <p className="title-text">Title Text</p>
+                                <input type="text" name="title" className="title-input" onChange={this.edit} placeholder={"Enter custom title"}/>
+                            </label>
+                        </div>
+                        <div className="text-box">
+                            <label className="text">
+                                <p className='text-text'>Body Text</p>
+                                <input type="text" name="body" className="text-input" onChange={this.edit} placeholder={"Enter custom text"}/>
+                            </label>
+                        </div>
+
+                    </div>:
+                    <div className="content">
+
+                    </div>
+                }
+
+            </div>
         </div>
     }
 }
