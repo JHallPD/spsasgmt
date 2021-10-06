@@ -8,6 +8,10 @@ import settings from './Settings.svg';
 import style from './Style.svg';
 import settingsS from './Settings (1).svg';
 import styleS from './Style (1).svg';
+import { BlockPicker  } from 'react-color';
+
+
+
 class Card extends React.Component {
     constructor(props) {
         super(props);
@@ -15,7 +19,10 @@ class Card extends React.Component {
             counter: 0,
             tab: "settings",
             editable: false,
-            ...this.props.data
+            titleColorOpen: false,
+            bodyColorOpen: false,
+            panelColorOpen: false,
+            ...this.props.data,
         };
     }
     // copy card
@@ -45,13 +52,17 @@ class Card extends React.Component {
         // open modal for color & text editor
         // color & text editor should edit the props
     }
+    //change tab toggle
     changeTab = (e) =>{
-        console.log(e.target.name)
-
         this.setState({ tab: e.target.name })
     }
+
+    openColorPicker = (name) =>{
+        this.setState((prev) => ({ [name]: !prev[name] }));
+    }
+
+    // edit logic to handle changing data
     edit = (e) =>{
-        console.log(e)
         switch (e.target.name) {
             case "title":
                 this.setState({ title: e.target.value })
@@ -75,12 +86,11 @@ class Card extends React.Component {
                 console.log("shouldn't be here :/")
         }
     }
-    focusOut = () =>{
-        console.log("what")
-        this.setState({ editable: !this.state.editable })
+    toggleColors = () => {
+
     }
     render() {
-        return <div className="card-div" style={{order: this.state.key}} id={this.state.key} onBlur={this.focusOut}>
+        return <div className="card-div" style={{order: this.state.key}} id={this.state.key}>
             <div className="card-title-box">
                 <p className="card-title" style={{color: this.state.titleColor, fontSize:this.state.titleSize}}>{this.state.title}</p>
                 <img src={edit} className="card-edit" alt="edit" onClick={this.openEdit}/>
@@ -95,16 +105,16 @@ class Card extends React.Component {
             </div>
             <div className="editModal" id={"edit-"+this.state.key} style={{visibility: this.state.editable?"visible":"hidden"}}>
                 <div className="tabs" >
-                    <div className="edit-settings" name="settings" onClick={() => this.changeTab}>
+                    <div className="edit-settings" name="settings" onClick={this.changeTab}>
                         {this.state.tab === "settings"?
-                            <img src={settings} className="selected"  alt="settings"/>
-                            :<img src={settingsS}  alt="settings"/>
+                            <img src={settings} className="selected"  name="settings" alt="settings"/>
+                            :<img src={settingsS}  alt="settings" name="settings"/>
                         }
                     </div>
-                    <div className="edit-style" name="style" onClick={() => this.changeTab}>
+                    <div className="edit-style" name="style" onClick={this.changeTab}>
                         {this.state.tab === "settings"?
-                            <img src={style} alt="style"/>
-                            :<img src={styleS} className="selected"  alt="style"/>}
+                            <img src={style} alt="style" name="style"/>
+                            :<img src={styleS} className="selected" name="style" alt="style"/>}
 
                     </div>
                 </div>
@@ -125,7 +135,48 @@ class Card extends React.Component {
 
                     </div>:
                     <div className="content">
-
+                        <p className="picker-title">Title</p>
+                        <div className="title-picker">
+                            <div className="title-size">
+                                <label>Size</label>
+                                <input type="text" name="titleSize" onChange={this.edit} value={this.state.titleSize} data-placeholder="/px"/>
+                            </div>
+                            <div className="title-color">
+                                <label>Color</label>
+                                <div style={{backgroundColor:this.state.titleColor}} onClick={() => this.openColorPicker('titleColorOpen')} className="colorBox"/>
+                                {this.state.titleColorOpen?
+                                <BlockPicker color={this.state.titleColor} classname="test"/>
+                                :null}
+                            </div>
+                        </div>
+                        <p className="picker-body">Body</p>
+                        <div className="body-picker">
+                            <div className="body-size">
+                                <label>Size</label>
+                                <input type="text" name="titleSize" onChange={this.edit} value={this.state.bodySize} data-placeholder="/px"/>
+                            </div>
+                            <div className="body-color">
+                                <label>Color</label>
+                                <div style={{backgroundColor:this.state.bodyColor}} onClick={() => this.openColorPicker('bodyColorOpen')} className="colorBox"/>
+                                {this.state.bodyColorOpen?
+                                    <BlockPicker color={this.state.bodyColor}/>
+                                    :null}
+                            </div>
+                        </div>
+                        <p className="picker-panel">Panel</p>
+                        <div className="panel-picker">
+                            <div className="panel-size">
+                                <label>Corner Radius</label>
+                                <input type="text" name="titleSize" onChange={this.edit} value={this.state.cornerRadius} data-placeholder="/px"/>
+                            </div>
+                            <div className="panel-color">
+                                <label>Color</label>
+                                <div style={{backgroundColor:this.state.color}} onClick={() => this.openColorPicker('panelColorOpen')} className="colorBox"/>
+                                {this.state.panelColorOpen?
+                                    <BlockPicker color={this.state.color}/>
+                                    :null}
+                            </div>
+                        </div>
                     </div>
                 }
 

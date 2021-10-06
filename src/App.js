@@ -13,7 +13,9 @@ function App() {
         titleSize: "36px",
         bodySize: "16px",
         title: "Custom Title",
-        text: "Custom body text",}]);
+        text: "Custom body text",
+        cornerRadius: "16px",
+        color: "#FFFFFF"}]);
 
     const deleteCard = (key) => {
         setList(list.filter(item => item.key !== key));
